@@ -55,8 +55,7 @@ async def scrape_dice(playwright):
     await page.goto(job["job_url"])
     time.sleep(2)
 
-    logo = page.locator("dhi-company-logo")
-    job_details = page.locator('[id="jobdetails"]')
+    logo = page.locator('div.flex.gap-3 img')
     item = {}
 
     item["job_title"] = job["job_title"]
@@ -68,24 +67,27 @@ async def scrape_dice(playwright):
     item["company_address"] = ""
     item["date_posted"] = ""
 
+    meta_details = page.locator('span.text-sm.font-normal.text-font-light')
+    company_name = page.locator('div.flex.gap-3 a')
 
-    company_address = job_details.locator('[data-cy="location"]')
-    date_posted = job_details.locator('[data-cy="postedDate"]')
-    company_name = job_details.locator('[data-cy="companyNameLink"]')
-
-    if await company_address.is_visible():
-      item["company_address"] = await company_address.inner_text()
+    if await meta_details.is_visible():
+      address_span = meta_details.locator('span >> nth=0')
+      if await address_span.is_visible():
+        item["company_address"] = await address_span.inner_text()
 
     if await company_name.is_visible():
       item["company_name"] = await company_name.inner_text()
 
     if await logo.is_visible():
-      item["company_logo"] = await logo.get_attribute("logo-url")
+      item["company_logo"] = await logo.get_attribute('src')
     else:
       print("Logo URL could not be retrieved from src or data-src.")
 
-    if await date_posted.is_visible():
-      item["date_posted"] = await date_posted.inner_text()
+    if await meta_details.is_visible():
+      posted_span = meta_details.locator('span >> nth=1')
+      if await posted_span.is_visible():
+        date_information = await posted_span.inner_text()
+        item["date_posted"] = date_information[3:len(date_information)]
 
     items.append(item)
 
