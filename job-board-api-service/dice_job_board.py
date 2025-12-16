@@ -29,6 +29,7 @@ async def scrape_dice(playwright):
       item["job_title"] = await main_details.locator('[data-testid="job-search-job-detail-link"]').get_attribute("aria-label")
       item["job_url"] = await main_details.locator('[data-testid="job-search-job-detail-link"]').get_attribute("href")
       item["company_salary"] = ""
+      item["company_address"] = ""
       item["company_metadata"] = []
 
       company_salary = main_details.locator("#salary-label")
@@ -37,14 +38,18 @@ async def scrape_dice(playwright):
         item["company_salary"] = await company_salary.inner_text()
 
       easy_apply = main_details.locator("#easyApply-label")
-
       employment_Type = main_details.locator("#employmentType-label")
-
 
       if await easy_apply.is_visible():
         item["company_metadata"].append(await easy_apply.inner_text())
       elif await employment_Type.is_visible():
         item["company_metadata"].append(await employment_Type.inner_text())
+      
+      location = main_details.locator('[data-testid="job-card"]').first.get_by_role("main").locator("span.inline-flex p")
+
+      if await location.is_visible():
+        item["company_address"] = await location.first.inner_text()
+
       jobs.append(item)
 
       page_count += 1
@@ -55,39 +60,31 @@ async def scrape_dice(playwright):
     await page.goto(job["job_url"])
     time.sleep(2)
 
-    logo = page.locator('div.flex.gap-3 img')
     item = {}
 
     item["job_title"] = job["job_title"]
     item["job_url"] = job["job_url"]
     item["company_salary"] = job["company_salary"]
     item["company_metadata"] = job["company_metadata"]
+    item["company_address"] = job["company_address"]
     item["company_name"] = ""
     item["company_logo"] = ""
-    item["company_address"] = ""
     item["date_posted"] = ""
 
-    meta_details = page.locator('span.text-sm.font-normal.text-font-light')
-    company_name = page.locator('div.flex.gap-3 a')
-
-    if await meta_details.is_visible():
-      address_span = meta_details.locator('span >> nth=0')
-      if await address_span.is_visible():
-        item["company_address"] = await address_span.inner_text()
+    company_name = page.locator('[data-cy="companyNameLink"]')
+    posted_text = page.locator('[data-cy="postedDate"] #timeAgo')
+    logo_url = page.locator("dhi-company-logo")
 
     if await company_name.is_visible():
       item["company_name"] = await company_name.inner_text()
 
-    if await logo.is_visible():
-      item["company_logo"] = await logo.get_attribute('src')
+    if await logo_url.is_visible():
+      item["company_logo"] = await logo_url.get_attribute("logo-url")
     else:
       print("Logo URL could not be retrieved from src or data-src.")
 
-    if await meta_details.is_visible():
-      posted_span = meta_details.locator('span >> nth=1')
-      if await posted_span.is_visible():
-        date_information = await posted_span.inner_text()
-        item["date_posted"] = date_information[3:len(date_information)]
+    if await posted_text.is_visible():
+      item["date_posted"] = await posted_text.inner_text()
 
     items.append(item)
 

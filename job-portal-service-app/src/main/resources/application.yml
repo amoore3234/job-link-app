@@ -18,17 +18,18 @@ spring:
             redirect-uri: http://localhost:8080/login/oauth2/code/keycloak
         provider:
           keycloak:
-            token-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
+            token-uri: ${KEYCLOAK_URL_INTERNAL}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/token
             authorization-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/auth
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_URL}/realms/${KEYCLOAK_REALM}
+          issuer-uri: ${KEYCLOAK_URL_EXTERNAL}/realms/${KEYCLOAK_REALM}
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
   datasource:
     url: ${JOB_PORTAL_POSTGRES_DATABASE_URL}
     username: ${JOB_PORTAL_POSTGRES_USER}
     password: ${JOB_PORTAL_POSTGRES_PASSWORD}
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

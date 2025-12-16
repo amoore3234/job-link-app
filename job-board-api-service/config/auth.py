@@ -6,15 +6,16 @@ from fastapi.security import OAuth2AuthorizationCodeBearer
 from jose import jwt, jwk
 from jose.exceptions import JWTError
 
-KEYCLOAK_URL = os.getenv("KEYCLOAK_URL")
+KEYCLOAK_URL_EXTERNAL = os.getenv("KEYCLOAK_URL_EXTERNAL")
+KEYCLOAK_URL_INTERNAL = os.getenv("KEYCLOAK_URL_INTERNAL")
 KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM")
 KEYCLOAK_CLIENT_ID = os.getenv("KEYCLOAK_CLIENT_ID")
-
-JWKS_URL = f"{KEYCLOAK_URL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/certs"
+ISSUER_URL = f"{KEYCLOAK_URL_INTERNAL}/realms/{KEYCLOAK_REALM}"
+JWKS_URL = f"{ISSUER_URL}/protocol/openid-connect/certs"
 
 oauth2_schema = OAuth2AuthorizationCodeBearer(
-    authorizationUrl=f"{KEYCLOAK_URL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/auth",
-    tokenUrl=f"{KEYCLOAK_URL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/token",
+    authorizationUrl=f"{KEYCLOAK_URL_EXTERNAL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/auth",
+    tokenUrl=f"{KEYCLOAK_URL_EXTERNAL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/token",
     auto_error=False
 )
 
@@ -22,14 +23,14 @@ async def validate_token(token: str = Depends(oauth2_schema)):
     if token is None:
         return None
     try:
+        print(f"Token received: {token}")
         # Fetch JWKS
         async with httpx.AsyncClient() as client:
             response = await client.get(JWKS_URL)
-            response.raise_for_status()
+            
             jwks = response.json()
             print(f"JWKS fetched successfully: {jwks}")
 
-        print(f"Token received: {token}")
         # Decode the token headers to get the key ID (kid)
         headers = jwt.get_unverified_headers(token)
         kid = headers.get("kid")
@@ -50,7 +51,7 @@ async def validate_token(token: str = Depends(oauth2_schema)):
             algorithms=["RS256"],
             audience=KEYCLOAK_CLIENT_ID,
             options={"verify_exp": True},
-            issuer=f"{KEYCLOAK_URL}/realms/{KEYCLOAK_REALM}"
+            issuer=f"{KEYCLOAK_URL_INTERNAL}/realms/{KEYCLOAK_REALM}"
         )
         return decoded_token
     except JWTError as e:
