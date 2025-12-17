@@ -1,5 +1,18 @@
 version: '3.8'
 services:
+  job-link-app:
+    build: ../job-link/
+    container_name: job-link-app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../job-link/:/app
+      - /app/node_modules
+    networks:
+      - job-portal-postgres-network
+      - job-board-api-postgres-network
+      - keycloak-network
+      - job-link-app-network
   job-portal-service:
     build: ../job-portal-service-app/
     container_name: job-portal-service
@@ -114,6 +127,7 @@ networks:
   job-portal-postgres-network:
   job-board-api-postgres-network:
   keycloak-network:
+  job-link-app-network:
 volumes:
   pg-data:
   pgdata:

@@ -23,11 +23,15 @@ Job Link is a job board application where users can upload their resumes and sea
 - [Docker](https://www.docker.com/get-started/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [Git](https://git-scm.com/)
+- [NodeJS](https://nodejs.org/en/download)
 - **For Windows (WSL):**
   - [WSL 2](https://learn.microsoft.com/en-us/windows/wsl/install)
   - [Ubuntu](https://documentation.ubuntu.com/wsl/latest/howto/install-ubuntu-wsl2/)
     - **Note:** If there is an issue starting the docker engine, you may need to add the user to the docker group. you can run this command:
       - `sudo usermod -aG docker $USER`
+# Installation
+## NodeJs installation for macOS version 11 or less
+The Job Link application is currently configured to support macOS with versions 11 or lower. To run the application locally successully, install node using version v18.20.8 and Vite version 4(vite@4).
 
 # Job Link Web Application
 The web application is currently a work-in-progress. You can refer to the [tech design](https://github.com/amoore3234/Project-Wiki/blob/main/Feature/Job-Link.md) to learn more about how users will interact with the web components. Once the application is in a complete state, this section will cover any gaps about the application that weren't addressed in the application's Readme or tech design.
