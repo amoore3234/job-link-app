@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS user_login (
+CREATE TABLE IF NOT EXISTS user_registration (
   id SERIAL PRIMARY KEY,
   firstName VARCHAR(200),
   lastName VARCHAR(255),
