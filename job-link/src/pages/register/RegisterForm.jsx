@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { authApi } from '../../api/auth.api';
 import { Link }  from 'react-router-dom';
 import './RegisterForm.css';
 
 export default function RegisterForm() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -57,7 +60,6 @@ export default function RegisterForm() {
   }
 
   async function handleSubmit(e) {
-    console.log("Form submitted with data:", form);
     e.preventDefault();
 
     const { firstName, lastName, username, userEmail, userPassword } = form;
@@ -80,7 +82,7 @@ export default function RegisterForm() {
     try {
       await authApi.register(data);
       setIsSubmitting(false);
-      alert("Registration successful!");
+      navigate("/register/success");
     } catch (error) {
       setIsSubmitting(false);
       console.error("Registration error:", error);

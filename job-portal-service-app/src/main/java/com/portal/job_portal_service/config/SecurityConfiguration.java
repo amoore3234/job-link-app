@@ -8,8 +8,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -48,6 +51,13 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    public AuthenticationManager authenticationManager(
+        AuthenticationConfiguration config
+    ) throws Exception {
+      return config.getAuthenticationManager();
+    }
+
+    @Bean
     CorsConfigurationSource corsConfigurationSource() {
       CorsConfiguration config = new CorsConfiguration();
 
@@ -63,16 +73,17 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         return httpSecurity
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(registry -> {
-                registry.requestMatchers("service/portal/jobPostings", "service/portal/register", "service/portal/addJobPostings").permitAll();
                 registry.requestMatchers(
-                  "/portal/register",
-                  "/portal/user/login",
-                  "/portal/user/register",
+                  "service/portal/jobPostings",
+                  "auth/register",
+                  "auth/login",
+                  "service/portal/addJobPostings").permitAll();
+                registry.requestMatchers(
                   "/css/**",
                   "/js/**",
                   "/swagger-ui.html",
@@ -81,22 +92,9 @@ public class SecurityConfiguration {
                   "/").permitAll();
                 registry.anyRequest().authenticated();
             })
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .oauth2Login(oauth2Login -> {
-              oauth2Login.loginPage("/portal/user/login").permitAll();
-            })
-            .formLogin(httpForm -> {
-                httpForm
-                    .loginPage("/portal/user/login")
-                    .loginProcessingUrl("/portal/user/login")
-                    .defaultSuccessUrl("/portal/user/home", true)
-                    .permitAll();
-            })
-            .logout(logout -> {
-              logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/portal/user/login")
-                .invalidateHttpSession(true)
-                .permitAll();
+              oauth2Login.loginPage("/login").permitAll();
             })
             .build();
     }

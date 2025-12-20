@@ -3,6 +3,7 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 const request = async (endpoint, options = {}) => {
 
   const url = `${BASE_URL}${endpoint}`;
+
   const response = await fetch(url, options);
 
   if (!response.ok) {
@@ -17,7 +18,9 @@ export const apiClient = {
   post: (endpoint, body) =>
     request(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(body)
     }),
 };

@@ -6,6 +6,8 @@ This repo houses all the services to run the Job Link Application.
 - [Features](#features)
 - [Prerequisites](#prerequistes)
 - [Job Link Web Application](#job-link-web-application)
+  - [Running Tests in the Job Link app](#running-tests-in-the-job-link-app)
+  - [Resolving Dependecy Issues](#resolving-dependency-issues)
 - [Installation and Configuration Steps for the Job Board API](#installation-and-configuration-steps-for-the-job-board-api)
 - [Installation and Configuration Steps for the Job Portal Service](#installation-and-configuration-steps-for-the-job-portal-service)
 - [Dev Links](#dev-links)
@@ -31,10 +33,18 @@ Job Link is a job board application where users can upload their resumes and sea
       - `sudo usermod -aG docker $USER`
 # Installation
 ## NodeJs installation for macOS version 11 or less
-The Job Link application is currently configured to support macOS with versions 11 or lower. To run the application locally successully, install node using version v18.20.8 and Vite version 4(vite@4).
+The Job Link application is currently configured to support macOS with versions 11 or lower. To run the application locally successully, install node using version v20.19.6 and Vite version 4(vite@4).
 
 # Job Link Web Application
 The web application is currently a work-in-progress. You can refer to the [tech design](https://github.com/amoore3234/Project-Wiki/blob/main/Feature/Job-Link.md) to learn more about how users will interact with the web components. Once the application is in a complete state, this section will cover any gaps about the application that weren't addressed in the application's Readme or tech design.
+
+## Running Tests in the Job Link app
+To run the tests, navigate to the job-link directory and use the commands provided to execute the test cases.
+  - `npm run test`
+  - `npm run test:ui` (To run tests using the browser)
+
+## Resolving Dependecy Issues
+If you run into any library issues when running the tests or the application, you can use this command, `rm -rf node_modules package-lock.json` to remove the node_modules and package-lock files and then reinstall the dependencies with the `npm install` or `npm i` command.
 
 # Installation and Configuration Steps for the Job Board API
  - Ensure a virtural environment is configured in the job-board-api-service directory, so you can Docker can run the application properly. You refer to the [Job Board API Readme](https://github.com/amoore3234/job-board-api?tab=readme-ov-file#installation) for more details.
@@ -45,3 +55,4 @@ The web application is currently a work-in-progress. You can refer to the [tech 
  # Dev Links
  - [Job Link Swagger UI](http://localhost:8082/swagger-ui/index.html#/)
  - [Job Link Keycloak Admin](http://localhost:8080/)
+ - [Job Link React UI](http://localhost:5137/)
