@@ -32,7 +32,7 @@ services:
     ports:
       - "8082:8080"
     volumes:
-      - .:/app
+      - ../job-portal-service-app:/app
     depends_on:
       - job-portal-postgres
     networks:
@@ -44,7 +44,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - .:/app
+      - ../job-board-api-service:/app
       - ./playwright_data:/var/lib/playwright_data
     depends_on:
       - job-board-api-postgres

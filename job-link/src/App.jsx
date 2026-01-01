@@ -3,6 +3,7 @@ import RegisterForm from './pages/register/RegisterForm';
 import LoginForm from './pages/login/LoginForm';
 import RegisterSuccess from './pages/register/RegisterSuccess';
 import LandingPage from './pages/landing/LandingPage';
+import UploadScreen from './pages/upload/UploadScreen';
 import './App.css'
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/register/success" element={<RegisterSuccess />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/upload" element={<UploadScreen />} />
         </Routes>
       </div>
     </>
