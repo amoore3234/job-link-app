@@ -1,0 +1,61 @@
+/* Page container */
+.upload-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Title */
+.upload-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #000;
+}
+
+/* Upload box */
+.upload-box {
+  width: 300px;
+  height: 180px;
+  border: 2px dashed #3b82f6;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+
+}
+
+.upload-content {
+  text-align: center;
+}
+
+/* Browse button */
+.browse-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 1.5rem;
+  width: 140px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* Drop text */
+.drop-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Invisible file input */
+.file-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
