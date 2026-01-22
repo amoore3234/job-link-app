@@ -33,7 +33,7 @@ Job Link is a job board application where users can upload their resumes and sea
       - `sudo usermod -aG docker $USER`
 # Installation
 ## NodeJs installation for macOS version 11 or less
-The Job Link application is currently configured to support macOS with versions 11 or lower. To run the application locally successully, install node using version v20.19.6 and Vite version 4(vite@4).
+The Job Link application is currently configured to support macOS with versions 11 or lower. To run the application locally successully, install node using version v20.19.6 or v18.20.8 and Vite version 4(vite@4).
 
 # Job Link Web Application
 The web application is currently a work-in-progress. You can refer to the [tech design](https://github.com/amoore3234/Project-Wiki/blob/main/Feature/Job-Link.md) to learn more about how users will interact with the web components. Once the application is in a complete state, this section will cover any gaps about the application that weren't addressed in the application's Readme or tech design.
