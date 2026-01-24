@@ -1,5 +1,6 @@
 import time
 import fitz
+from pathlib import Path
 import re
 from mapping_model.job_posting_mapping import JobPostingMapping as JobPosting
 from playwright.async_api import async_playwright
@@ -93,13 +94,14 @@ async def scrape_dice(playwright, document) -> list[dict]:
 
   return items
 
-def find_keyword_counts(pdf_path: str) -> str:
+def find_keyword_counts(document: str) -> str:
     keywords = ["Software Engineer", "Full Stack Developer", "Backend Developer", "Java Developer", "Python Developer"]
-
+    current_dir = f"{Path.home()}/Users/anthonymoore/{document}"
+    print(f"Current working directory: {current_dir}")
+    pdf_path = find_file(document, current_dir)
     doc = fitz.open(pdf_path)
     results = {}
     newString = ""
-    max_count = 0
 
     for keyword in keywords:
         results[keyword] = 0
@@ -117,6 +119,13 @@ def find_keyword_counts(pdf_path: str) -> str:
             newString = "+".join(newString.split())
 
     return newString
+
+def find_file(filename, search_path):
+    for path in Path(search_path).rglob(filename):
+        print(f"File found: {path}")
+        return path
+    print("File not found.")
+    return None
 
 async def map_job_definition(document) -> list[JobPosting]:
   async with async_playwright() as playwright:
