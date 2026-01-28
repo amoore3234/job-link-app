@@ -22,6 +22,9 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Slf4j
@@ -91,7 +94,12 @@ public class JobPortalController {
     String fileName = document.getOriginalFilename();
 
     try {
-      document.transferTo(new File("/app/data/" + fileName));
+      Path uploadDir = Paths.get("/app/uploads");
+      Files.createDirectories(uploadDir);
+
+      Path destination = uploadDir.resolve(document.getOriginalFilename());
+      document.transferTo(destination.toFile());
+      
       jobPostingService.addJobPostings(fileName);
       return ResponseEntity.noContent().build();
     } catch(WebClientResponseException e) {

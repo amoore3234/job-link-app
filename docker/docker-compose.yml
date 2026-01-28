@@ -33,6 +33,7 @@ services:
       - "8082:8080"
     volumes:
       - .:/app
+      - ./uploads:/app/uploads
     depends_on:
       - job-portal-postgres
     networks:
@@ -69,7 +70,7 @@ services:
       - "5432:5432"
     volumes:
       - ./job-board-init.sql:/docker-entrypoint-initdb.d/init.sql
-      - pgdata:/var/lib/postgresql
+      - job_board_postgres_data:/var/lib/postgresql
     restart: always
     networks:
       - job-board-api-postgres-network
@@ -118,7 +119,7 @@ services:
       - "5433:5432"
     volumes:
       - ./job-portal-init.sql:/docker-entrypoint-initdb.d/init.sql
-      - pg-data:/var/lib/postgresql
+      - job_portal_postgres_data:/var/lib/postgresql
     restart: always
     networks:
       - job-portal-postgres-network
@@ -129,7 +130,7 @@ networks:
   keycloak-network:
   job-link-app-network:
 volumes:
-  pg-data:
-  pgdata:
+  job_portal_postgres_data:
+  job_board_postgres_data:
   playwright_data:
   keycloak_data:

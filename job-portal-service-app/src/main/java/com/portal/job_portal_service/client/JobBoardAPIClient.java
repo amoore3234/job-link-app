@@ -43,9 +43,8 @@ public class JobBoardAPIClient {
     try {
       addPostings = jobBoardAPIClient.post()
           .uri(uriBuilder -> uriBuilder
-                  .path("/job_postings")
-                  .queryParam("document", document)
-                  .build())
+                  .path("/job_postings/{document}")
+                  .build(document))
           .retrieve()
           .bodyToMono(new ParameterizedTypeReference<List<JobPostingRequestDTO>>() {})
           .block();

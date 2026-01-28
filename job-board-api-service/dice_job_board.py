@@ -18,9 +18,9 @@ async def scrape_dice(playwright, document) -> list[dict]:
   page_count = 1
 
   jobs = []
+  query_string = find_keywords(document)
 
   while page_count <= 1:
-    query_string = find_keyword_counts(document)
     await page.goto(f'https://www.dice.com/jobs?filters.workplaceTypes=Remote&q={query_string}&page=' + str(page_count))
     time.sleep(10)
     vacancies = await page.locator('[data-testid="job-card"]').all()
@@ -94,10 +94,10 @@ async def scrape_dice(playwright, document) -> list[dict]:
 
   return items
 
-def find_keyword_counts(document: str) -> str:
+def find_keywords(document: str) -> str:
     keywords = ["Software Engineer", "Full Stack Developer", "Backend Developer", "Java Developer", "Python Developer"]
-    current_dir = f"{Path.home()}/Users/anthonymoore/{document}"
-    print(f"Current working directory: {current_dir}")
+
+    current_dir = f"/app/uploads/"
     pdf_path = find_file(document, current_dir)
     doc = fitz.open(pdf_path)
     results = {}
@@ -122,9 +122,7 @@ def find_keyword_counts(document: str) -> str:
 
 def find_file(filename, search_path):
     for path in Path(search_path).rglob(filename):
-        print(f"File found: {path}")
         return path
-    print("File not found.")
     return None
 
 async def map_job_definition(document) -> list[JobPosting]:

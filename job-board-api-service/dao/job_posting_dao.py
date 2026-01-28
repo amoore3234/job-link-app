@@ -28,9 +28,9 @@ class JobPostingDao:
             await session.commit()
             return job_postings
 
-    async def add_dice_job_postings(self) -> list[JobPosting]:
+    async def add_dice_job_postings(self, document) -> list[JobPosting]:
         async with AsyncSessionLocal() as session:
-            dice_job_postings = await map_job_definition()
+            dice_job_postings = await map_job_definition(document)
             session.add_all(dice_job_postings)
             await session.commit()
             return dice_job_postings

@@ -10,6 +10,9 @@ COPY pom.xml .
 
 RUN chmod +x mvnw
 
+# Create uploads directory for file storage
+RUN mkdir -p /app/uploads
+
 # Copy the source code
 COPY src src
 
