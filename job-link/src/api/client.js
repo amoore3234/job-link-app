@@ -23,4 +23,9 @@ export const apiClient = {
       },
       body: JSON.stringify(body)
     }),
+  upload: (endpoint, formData) =>
+    request(endpoint, {
+      method: 'POST',
+      body: formData
+    })
 };
