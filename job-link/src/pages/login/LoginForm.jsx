@@ -51,7 +51,7 @@ export default function LoginForm() {
     try {
       await authApi.login(data);
       setIsSubmitting(false);
-      alert("Login successful!");
+      navigate("/upload");
     } catch (error) {
       setIsSubmitting(false);
       console.error("Login error:", error);

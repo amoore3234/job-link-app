@@ -32,7 +32,7 @@ services:
     ports:
       - "8082:8080"
     volumes:
-      - ../job-portal-service-app:/app
+      - ../uploads:/app/uploads
     depends_on:
       - job-portal-postgres
     networks:
@@ -46,6 +46,7 @@ services:
     volumes:
       - ../job-board-api-service:/app
       - ./playwright_data:/var/lib/playwright_data
+      - ../uploads:/app/uploads
     depends_on:
       - job-board-api-postgres
     environment:
@@ -133,3 +134,4 @@ volumes:
   pgdata:
   playwright_data:
   keycloak_data:
+  uploads:

@@ -78,23 +78,37 @@ public class SecurityConfiguration {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(registry -> {
-                registry.requestMatchers(
-                  "service/portal/jobPostings",
-                  "auth/register",
-                  "auth/login",
-                  "service/portal/addJobPostings").permitAll();
-                registry.requestMatchers(
-                  "/css/**",
-                  "/js/**",
-                  "/swagger-ui.html",
-                  "/swagger-ui/**",
-                  "/v3/api-docs/**",
-                  "/").permitAll();
-                registry.anyRequest().authenticated();
+              registry.requestMatchers(
+                "service/portal/jobPostings",
+                "/auth/register",
+                "/auth/login",
+                "/service/portal/addJobPostings").permitAll();
+              registry.requestMatchers(
+                "/css/**",
+                "/js/**",
+                "/swagger-ui.html",
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/").permitAll();
+              registry.anyRequest().authenticated();
             })
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class)
             .oauth2Login(oauth2Login -> {
-              oauth2Login.loginPage("/login").permitAll();
+              oauth2Login.loginPage("/portal/user/login").permitAll();
+            })
+            .formLogin(httpForm -> {
+                httpForm
+                    .loginPage("/portal/user/login")
+                    .loginProcessingUrl("/portal/user/login")
+                    .defaultSuccessUrl("/portal/user/home", true)
+                    .permitAll();
+            })
+            .logout(logout -> {
+              logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/portal/user/login")
+                .invalidateHttpSession(true)
+                .permitAll();
             })
             .build();
     }

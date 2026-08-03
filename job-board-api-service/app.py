@@ -26,14 +26,14 @@ async def create_jobs(postings: list[JobPostingRequest]):
     service.create_job_postings(postings)
     return postings
 
-@app.post("/api/job_postings",
+@app.post("/api/job_postings/{document}",
           summary="Create and save multiple job postings",
           description="Retrieve job postings from the Dice job board",
           dependencies=[Depends(get_current_user)])
-async def create_dice_jobs():
+async def create_dice_jobs(document: str):
     service = JobPostingService()
     await service.delete_job_postings()
-    await service.create_dice_postings()
+    await service.create_dice_postings(document)
 
 @app.get("/api/postings",
          response_model=list[JobPostingResponse],

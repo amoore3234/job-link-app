@@ -1,4 +1,3 @@
-
 from dao.job_posting_dao import JobPostingDao
 from mapping_model.job_posting_mapping import JobPostingMapping
 from model.job_posting_request import JobPostingRequest
@@ -19,8 +18,8 @@ class JobPostingService:
             job_mappings.append(job_mapping)
         return await self.repository.add_job_postings(job_mappings)
 
-    async def create_dice_postings(self) -> list[JobPostingRequest]:
-        return await self.repository.add_dice_job_postings()
+    async def create_dice_postings(self, document) -> list[JobPostingRequest]:
+        return await self.repository.add_dice_job_postings(document)
 
     async def get_job_postings(self) -> list[JobPostingResponse]:
         return await self.repository.get_all_job_postings()

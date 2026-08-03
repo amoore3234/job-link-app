@@ -16,46 +16,66 @@
 }
 
 /* Upload box */
-.upload-box {
+.upload-box, .success-box {
   width: 300px;
   height: 180px;
   border: 2px dashed #3b82f6;
-  border-radius: 10px;
-
+  border-radius: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-
 }
 
 .upload-content {
   text-align: center;
+  z-index: 10;
 }
 
+/* .success-box {
+  border: 2px dashed rgb(0,158,4);
+} */
+
 /* Browse button */
-.browse-btn {
+.browse-btn, .success-btn {
+  display: inline-block;
+  text-align: center;
   background-color: #3b82f6;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 20px;
   padding: 0.4rem 1.5rem;
   width: 140px;
   font-size: 0.9rem;
   cursor: pointer;
+  margin-top: 1rem;
+}
+
+.upload-btn, .success-btn {
+  border-radius: 30px;
+  padding: 0.6rem 1.5rem;
+  width: 250px;
 }
 
 /* Drop text */
-.drop-text {
+.file-text {
   font-size: 0.75rem;
   color: #6b7280;
+}
+
+.file-text {
+  margin-top: 1rem;
 }
 
 /* Invisible file input */
 .file-input {
   position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  pointer-events: none;
 }
