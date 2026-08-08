@@ -14,7 +14,7 @@ services:
       - keycloak-network
       - job-link-app-network
   job-portal-service:
-    build: ../job-portal-service-app/
+    build: ../job-portal-service/
     container_name: job-portal-service
     environment:
       SPRING_DATASOURCE_URL: ${JOB_PORTAL_POSTGRES_DATABASE_URL}

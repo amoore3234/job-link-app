@@ -51,9 +51,9 @@ export default function UploadScreen() {
     }
   };
 
-  const handleGoHome = (e) => {
+  const handleGoToDashboard = (e) => {
     e.stopPropagation();
-    window.location.href = "/";
+    window.location.href = "/dashboard";
   };
 
   return (
@@ -86,7 +86,6 @@ export default function UploadScreen() {
           accept=".pdf,.doc,.docx"
           ref={fileInputRef}
           onChange={handleFileChange}
-          // onClick={triggerFileInput}
           disabled={isSuccess}
         />
       </div>
@@ -94,15 +93,14 @@ export default function UploadScreen() {
         {isSuccess ? `Successfully uploaded ${file.name}` : ""}
       </div>
         {isSuccess ? (
-          <button className="success-btn" onClick={handleGoHome}>
+          <button className="success-btn" onClick={handleGoToDashboard}>
             View Jobs
           </button>
         ) : (
           file && (
             <button
               className="upload-btn"
-              onClick={(e) => {
-                // e.stopPropagation();
+              onClick={() => {
                 handleUploadSubmit();
               }}
               disabled={isUploading}

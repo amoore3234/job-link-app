@@ -1,0 +1,255 @@
+.job-search-view {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.search-bar-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.search-input-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px; /* Limits maximum length width across widescreen monitors */
+}
+
+/* Absolute Positioning for the Inner Search Icon */
+.search-input-icon {
+  position: absolute;
+  left: 18px;
+  top: 38%;
+  transform: translateY(-50%);
+  pointer-events: none; /* Allows click-through interaction straight to the input box */
+  opacity: 0.85;
+}
+
+/* Match the exact pill shape and thin border configuration in the screenshot */
+.main-search-input {
+  width: 100%;
+  height: 48px;
+  border-radius: 9999px; /* Generates the perfect fluid capsule border rounding */
+  border: 1px solid #d1d5db; /* Light gray outline boundary border */
+  padding: 0 24px 0 48px; /* Extra left padding leaves room for the lens icon graphics */
+  font-size: 16px;
+  color: #1f2937;
+  background-color: #ffffff;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease-in-out;
+}
+
+/* Interactive focus highlight feedback */
+.main-search-input:focus {
+  border-color: #3b82f6; /* Switches outline accent over to active blue on click */
+}
+
+.main-search-input::placeholder {
+  color: #9ca3af; /* Soft matching muted shade for the 'Search' word placeholder */
+}
+
+.job-results-placeholder {
+  margin-top: 16px;
+}
+
+.job-search-view {
+  width: 100%;
+  height: calc(100vh - 120px); /* Locks view container height limits inside layout viewport */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.search-bar-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+.search-input-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.search-input-icon {
+  position: absolute;
+  left: 18px;
+  top: 38%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.main-search-input {
+  width: 100%;
+  height: 44px;
+  border-radius: 9999px;
+  border: 1px solid #cbd5e1;
+  padding: 0 24px 0 48px;
+  font-size: 16px;
+  color: #1e293b;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* INDEPENDENT SCROLL REGION PANEL CONFIGURATION */
+.scrollable-results-area {
+  flex: 1;
+  overflow-y: auto; /* Forces content to scroll internally inside main view */
+  padding-right: 8px; /* Smooth padding gap clearances for native browser scroll tracks */
+}
+
+/* RESPONSIVE LAYOUT THREE-COLUMN GRID MATRIX */
+.jobs-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px;
+  padding-bottom: 48px;
+}
+
+/* INDIVIDUAL POSTING MATERIAL CONTAINER SECTORS */
+.job-posting-card {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+}
+
+.job-posting-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 1200px) {
+  .jobs-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .jobs-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.card-header-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+}
+
+.company-logo-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 8px;
+  /* border: 1px solid #f1f5f9; */
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.job-identity-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Tight vertical gap layout matching image layout constraints */
+  flex: 1;
+}
+
+.card-text-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.job-card-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.4;
+}
+
+.job-card-meta {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.2;
+}
+
+.job-card-salary {
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+/* CLASSIFICATION PILL AND METRIC LANE ROW PACKS */
+.job-card-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tag-chip {
+  background-color: #eff6ff; /* Soft clear blue block */
+  color: #1e40af;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Secondary Tech Stack Specific Chip Custom Accent Type */
+.tag-chip.tech-chip {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.job-card-date {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-left: 4px;
+}
+
+/* CARD ACTION SUBMISSION TRIGGER ELEMENT */
+.apply-now-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  background-color: #dbeafe; /* Classic semi-flat blue button fill */
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: auto;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.apply-now-btn:hover {
+  background-color: #bfdbfe;
+}

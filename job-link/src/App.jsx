@@ -5,6 +5,7 @@ import RegisterSuccess from './pages/register/RegisterSuccess';
 import LandingPage from './pages/landing/LandingPage';
 import UploadScreen from './pages/upload/UploadScreen';
 import './App.css'
+import DashboardPage from './pages/dashboard/DashboardPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/register/success" element={<RegisterSuccess />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/upload" element={<UploadScreen />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
         </Routes>
       </div>
     </>

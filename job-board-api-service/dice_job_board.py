@@ -52,11 +52,19 @@ async def scrape_dice(playwright, document) -> list[dict]:
       elif await employment_Type.is_visible():
         item["company_metadata"].append(await employment_Type.inner_text())
 
-      location = main_details.locator('p:text-is("•") >> xpath=preceding::p[1]')
-      date_posted = main_details.locator('p:text-is("•") >> xpath=following::p[1]')
-      if await location.is_visible():
-        item["company_address"] = await location.inner_text()
-        item["date_posted"] = await date_posted.inner_text()
+      location = "Remote"
+      date_posted = "Recently"
+
+      meta_paragraph = main_details.locator('p:has-text("•")').first
+      full_meta_text = await meta_paragraph.text_content()
+
+      if full_meta_text and "•" in full_meta_text:
+          parts = full_meta_text.split("•")
+          location = parts[0].strip()
+          date_posted = parts[1].strip()
+
+      item["company_address"] = location
+      item["date_posted"] = date_posted
 
       jobs.append(item)
 
@@ -65,13 +73,13 @@ async def scrape_dice(playwright, document) -> list[dict]:
   items = []
 
   for job in jobs:
-    await page.goto(f"https://www.dice.com/{job["job_url"]}")
+    await page.goto(f"https://www.dice.com{job["job_url"]}")
     time.sleep(2)
 
     item = {}
 
     item["job_title"] = job["job_title"]
-    item["job_url"] = job["job_url"]
+    item["job_url"] = f"https://www.dice.com{job["job_url"]}"
     item["company_salary"] = job["company_salary"]
     item["company_metadata"] = job["company_metadata"]
     item["company_address"] = job["company_address"]

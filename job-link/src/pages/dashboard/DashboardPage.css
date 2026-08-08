@@ -1,0 +1,240 @@
+:root {
+  --bg-main: #f8fafc;
+  --bg-sidebar: #ffffff;
+  --text-primary: #1e293b;
+  --text-muted: #64748b;
+  --active-blue: #3b82f6;
+  --border-color: #e2e8f0;
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 70px;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+}
+
+.portal-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/* SIDEBAR LAYOUT STYLING */
+.portal-sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  z-index: 50;
+}
+
+.portal-sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+}
+
+.sidebar-brand {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.brand-logo-circle {
+  width: 36px;
+  height: 36px;
+  background-color: var(--active-blue);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: 'Shrikhand', sans-serif;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  white-space: nowrap;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: 'Shrikhand', sans-serif;
+}
+
+.sidebar-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.menu-item:hover {
+  background-color: #f1f5f9;
+  color: var(--text-primary);
+}
+
+.menu-item.active {
+  background-color: #e2e8f0;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.menu-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.portal-sidebar.collapsed .menu-text,
+.portal-sidebar.collapsed .brand-name {
+  display: none;
+}
+
+/* MAIN VIEWPORT AND HEADER PANELS */
+.portal-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.portal-header {
+  height: 70px;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 24px;
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+/* SPECIFIC STYLE RULES TO PULL BUTTON FLAT TO THE LEFT EDGE MARGIN LINE */
+.sidebar-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* CRITICAL MARGIN PUSH EXPLICIT ENGINE RULE */
+  margin-right: auto; /* Forces all following flex siblings (actions/profile) straight to the right side */
+
+  transition: all 0.15s ease-in-out;
+}
+
+.sidebar-toggle-btn:hover {
+  background-color: #f1f5f9;
+  color: var(--text-primary);
+}
+
+.hamburger-toggle, .notification-btn {
+  width: 40px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger-toggle {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.hamburger-toggle:hover, .notification-btn:hover {
+  background-color: #f1f5f9;
+  color: var(--text-primary);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.avatar-circle {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background-color: #f8fafc;
+}
+
+/* CONTAINER TARGET WINDOW FOR INJECTED VIEWS */
+.portal-content-view {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.placeholder-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--border-color);
+  height: 100%;
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}

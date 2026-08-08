@@ -5,5 +5,6 @@ export const portalApi = {
     method: "POST",
     body: file,
     credentials: "include"
-  })
+  }),
+  getJobPostings: async () => await apiClient.get("/service/portal/jobPostings")
 };
