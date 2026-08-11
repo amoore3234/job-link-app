@@ -1,14 +1,34 @@
 import React, { useState } from "react";
 import "./DashboardPage.css";
 import JobSearch from "../../component/JobSearch";
+import { authApi } from "../../api/auth.api";
 
 export default function DashboardPage({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [name, setName] = useState("");
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const profileName = () => {
+    const username = localStorage.getItem("loggedInUser");
+
+    if (username) {
+      const data = {
+        "username": username
+      }
+      const user = await authApi.user(data);
+      console.log(`User profile: ${user}`);
+      const firstName = user?.firstName;
+      const lastName = user?.lastName;
+
+      return `${firstName} ${lastName}`;
+    } else {
+      return "Guest User"
+    }
+  }
 
   // RENDERING CONTROLLER FOR MULTIPLE VIEWS
   const renderContentView = () => {
@@ -100,7 +120,7 @@ export default function DashboardPage({ children }) {
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
             </button>
             <div className="user-profile">
-              <span className="user-name">Anthony Moore</span>
+              <span className="user-name">{profileName()}</span>
               <div className="avatar-circle">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
               </div>

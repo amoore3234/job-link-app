@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { authApi } from '../../api/auth.api';
 import './LoginForm.css';
 
@@ -7,9 +8,10 @@ export default function LoginForm() {
     username: "",
     userPassword: ""
   });
-
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -49,9 +51,16 @@ export default function LoginForm() {
     };
 
     try {
-      await authApi.login(data);
+      localStorage.setItem("loggedInUser", username);
+      const response = await authApi.login(data);
+      console.log(`Login response: ${JSON.stringify(response, null, 2)}`);
+      const isFirstTime = response?.isFirstTimeUser
       setIsSubmitting(false);
-      navigate("/upload");
+      if (isFirstTime) {
+        navigate("/upload");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
       setIsSubmitting(false);
       console.error("Login error:", error);
