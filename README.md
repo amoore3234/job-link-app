@@ -11,6 +11,7 @@ This repo houses all the services to run the Job Link Application.
 - [Installation and Configuration Steps for the Job Board API](#installation-and-configuration-steps-for-the-job-board-api)
 - [Installation and Configuration Steps for the Job Portal Service](#installation-and-configuration-steps-for-the-job-portal-service)
 - [Dev Links](#dev-links)
+- [Upcoming Features](#upcoming-features)
 
 # Introduction
 Job Link is a job board application where users can upload their resumes and search job roles based on the information presented in the uploaded document. This project contains backend services including a Java application (job-portal-service) and a Python application (job-board-api) that interacts with job listings from Dice and returns the data to the web app interface. To learn more about the feature, feel free to read through the [Job Link tech design](https://github.com/amoore3234/Project-Wiki/blob/main/Feature/Job-Link.md).
@@ -46,13 +47,19 @@ To run the tests, navigate to the job-link directory and use the commands provid
 ## Resolving Dependecy Issues
 If you run into any library issues when running the tests or the application, you can use this command, `rm -rf node_modules package-lock.json` to remove the node_modules and package-lock files and then reinstall the dependencies with the `npm install` or `npm i` command.
 
-# Installation and Configuration Steps for the Job Board API
+## Installation and Configuration Steps for the Job Board API
  - Ensure a virtural environment is configured in the job-board-api-service directory, so you can Docker can run the application properly. You refer to the [Job Board API Readme](https://github.com/amoore3234/job-board-api?tab=readme-ov-file#installation) for more details.
 
- # Installation and Configuration Steps for the Job Portal Service
- - You can navigate to the job-portal-service-app directory to ensure the required dependencies are installed successfully. For more details, you can refer to the [Job Portal Service Readme](https://github.com/amoore3234/job-portal-service?tab=readme-ov-file#installation) to ensure the service is properly configured.
+## Installation and Configuration Steps for the Job Portal Service
+- You can navigate to the job-portal-service-app directory to ensure the required dependencies are installed successfully. For more details, you can refer to the [Job Portal Service Readme](https://github.com/amoore3234/job-portal-service?tab=readme-ov-file#installation) to ensure the service is properly configured.
 
- # Dev Links
- - [Job Link Swagger UI](http://localhost:8082/swagger-ui/index.html#/)
- - [Job Link Keycloak Admin](http://localhost:8080/)
- - [Job Link React UI](http://localhost:5137/)
+# Dev Links
+- [Job Link Swagger UI](http://localhost:8082/swagger-ui/index.html#/)
+- [Job Link Keycloak Admin](http://localhost:8080/)
+- [Job Link React UI](http://localhost:5137/)
+
+# Upcoming Features
+- Implementing advance metrics for tracking application progress. Checkout the [mocks](https://github.com/amoore3234/Project-Wiki/blob/main/Feature/Job-Link.md#dashboard-screen) for more details.
+- Implement MFA within the login workflow.
+- Provide resume scores and predicition metrics to measure a candidate's strength for a specific role.
+- Include an automated synchronization background process to update live job data.

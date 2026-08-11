@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { authApi } from '../../api/auth.api';
 import './LoginForm.css';
 
@@ -7,9 +8,21 @@ export default function LoginForm() {
     username: "",
     userPassword: ""
   });
-
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+   useEffect(() => {
+
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+
+      return () => {
+        document.documentElement.style.overflow = 'unset';
+        document.body.style.overflow = 'unset';
+      };
+    }, []);
+
+  const navigate = useNavigate();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -49,9 +62,22 @@ export default function LoginForm() {
     };
 
     try {
-      await authApi.login(data);
+      localStorage.setItem("loggedInUser", username);
+      let response = await authApi.login(data);
+      if(response) {
+        response = JSON.parse(response);
+      } else {
+        console.log(`There was an issue parsing the raw JSON data.`);
+      }
+
+      const isFirstTime = response?.confirmFirstTimeLogin
       setIsSubmitting(false);
-      navigate("/upload");
+
+      if (isFirstTime) {
+        navigate("/upload");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
       setIsSubmitting(false);
       console.error("Login error:", error);
@@ -59,12 +85,17 @@ export default function LoginForm() {
     }
   }
 
+  const handleSignUpClick = (e) => {
+    e.preventDefault();
+    navigate("/register");
+  };
+
   return (
     <>
       <div className="container">
         <div className="login-container">
           <form onSubmit={handleSubmit} className="login-form">
-            <h2>Login</h2>
+            <h2>Please Login</h2>
             {errors.errorMessage && <span className="error">{errors.errorMessage}</span>}
             {errors.username && <span className="error">{errors.username}</span>}
             <input
@@ -83,8 +114,17 @@ export default function LoginForm() {
               onChange={handleChange}
             />
 
-            <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Logging in..." : "Login"}
+            <button className="btn sign-in-btn" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Logging in..." : "Sign In"}
+            </button>
+
+            <button
+              className="btn sign-up-btn"
+              type="button"
+              onClick={handleSignUpClick}
+              disabled={isSubmitting}
+            >
+              Sign Up
             </button>
           </form>
         </div>

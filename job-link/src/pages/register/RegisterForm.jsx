@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../../api/auth.api';
 import { Link }  from 'react-router-dom';
@@ -18,6 +18,17 @@ export default function RegisterForm() {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+
+      return () => {
+        document.documentElement.style.overflow = 'unset';
+        document.body.style.overflow = 'unset';
+      };
+    }, []);
 
   function handleChange(e) {
     const { name, value } = e.target;

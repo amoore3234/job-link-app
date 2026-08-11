@@ -15,18 +15,17 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -59,7 +58,7 @@ public class AuthController {
     user.setCreatedTimestamp(ZonedDateTime.now());
     userService.createUser(user);
 
-    return new ResponseEntity<>("User registered successfully", HttpStatusCode.valueOf(200));
+    return new ResponseEntity<>("User registered successfully", HttpStatusCode.valueOf(204));
   }
 
   @PostMapping("/login")
@@ -73,10 +72,14 @@ public class AuthController {
               request.getUserPassword()
           )
         );
-
+        String storageDirectoryPath = "/app/uploads/";
+        boolean hasUploadedResume = userService.checkUserResumeExists(request.getUsername(), storageDirectoryPath);
+        boolean isFirstTimeUser = !hasUploadedResume;
         String token = jwtService.generateToken(auth.getName());
+
         LoginResponse response = new LoginResponse();
         response.setToken(token);
+        response.setConfirmFirstTimeLogin(isFirstTimeUser);
 
         return ResponseEntity.ok(response);
       } catch (BadCredentialsException e) {
@@ -87,4 +90,30 @@ public class AuthController {
           return ResponseEntity.status(500).build();
       }
     }
+
+    @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+      @Operation(summary = "Returns user details")
+      @ApiResponses(value = {
+        @ApiResponse(
+          responseCode = "200",
+          description = "User details we returned successfully.",
+          content = @Content(
+            mediaType = "application/json"
+          )
+        )
+      })
+      public ResponseEntity<User> findUserByUsername(@RequestParam("username") String username) {
+        try {
+          Optional<User> response = userService.findByUsername(username);
+          User user = response.get();
+          User profileName = new User();
+          profileName.setFirstName(user.getFirstName());
+          profileName.setLastName(user.getLastName());
+
+          return ResponseEntity.ok(profileName);
+        } catch (Exception e) {
+          log.error("An unexpected error occurred: " + e.getMessage());
+          return ResponseEntity.status(500).build();
+        }
+      }
 }

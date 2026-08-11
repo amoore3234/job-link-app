@@ -29,6 +29,7 @@ export default function UploadScreen() {
   };
 
   const handleUploadSubmit = async () => {
+    const username = localStorage.getItem("loggedInUser");
     if (!file) {
       setError("Please select a file first.");
       return;
@@ -39,10 +40,12 @@ export default function UploadScreen() {
 
     const formData = new FormData();
     formData.append("document", file);
+    if (username) {
+      formData.append("username", username);
+    }
 
     try {
       const uploadCall = await portalApi.upload(formData);
-      console.log(`Successful upload: ${uploadCall}`);
       setIsSuccess(true);
     } catch (err) {
       setError(err.response?.data?.message || "Upload failed. Please try again.");

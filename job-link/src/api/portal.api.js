@@ -1,7 +1,8 @@
 import { apiClient } from "./client";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const portalApi = {
-  upload: async (file) => await fetch("http://localhost:8082/service/portal/addJobPostings", {
+  upload: async (file) => await fetch(`${BASE_URL}/service/portal/addJobPostings`, {
     method: "POST",
     body: file,
     credentials: "include"
