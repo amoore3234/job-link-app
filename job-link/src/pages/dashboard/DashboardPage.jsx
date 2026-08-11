@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./DashboardPage.css";
 import JobSearch from "../../component/JobSearch";
 import { authApi } from "../../api/auth.api";
@@ -6,29 +6,63 @@ import { authApi } from "../../api/auth.api";
 export default function DashboardPage({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [name, setName] = useState("");
+  const [name, setName] = useState("Loading...");
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const profileName = () => {
-    const username = localStorage.getItem("loggedInUser");
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const username = localStorage.getItem("loggedInUser");
+      console.log(`Username: ${username}`);
 
-    if (username) {
-      const data = {
-        "username": username
+      if (username) {
+        try {
+          const response = await authApi.user(username);
+
+          if (!response.ok) {
+            throw new Error(`HTTP Error Status: ${response.status}`);
+          }
+          const user = await response.json();
+          console.log(`User profile: ${JSON.stringify(user, null, 2)}`);
+          const firstName = user?.firstName || "";
+          const lastName = user?.lastName || "";
+
+          if (firstName || lastName) {
+            setName(`${firstName} ${lastName}`);
+          } else {
+            setName("Guest User");
+          }
+        } catch (error) {
+          console.error("Failed to load user profile:", error);
+          setName("Guest User");
+        }
+      } else {
+        setName("Guest User");
       }
-      const user = await authApi.user(data);
-      console.log(`User profile: ${user}`);
-      const firstName = user?.firstName;
-      const lastName = user?.lastName;
+    };
 
-      return `${firstName} ${lastName}`;
-    } else {
-      return "Guest User"
-    }
+    fetchUserData();
+  }, []);
+
+  const handleLogout = (e) => {
+    e.stopPropagation();
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "/login";
   }
+
+  const toggleProfileDropdown = (e) => {
+    e.stopPropagation();
+    setIsProfileDropdownOpen(!isProfileDropdownOpen);
+  }
+
+  useEffect(() => {
+    const closeDropdownGlobal = () => setIsProfileDropdownOpen(false);
+    window.addEventListener("click", closeDropdownGlobal);
+    return () => window.removeEventListener("click", closeDropdownGlobal);
+  }, []);
 
   // RENDERING CONTROLLER FOR MULTIPLE VIEWS
   const renderContentView = () => {
@@ -48,7 +82,7 @@ export default function DashboardPage({ children }) {
       <aside className={`portal-sidebar ${isSidebarOpen ? "open" : "collapsed"}`}>
         <div className="sidebar-brand">
           <div className="brand-logo-circle">JL</div>
-          <span className="brand-name">Job Link</span>
+          <span className="brand-name">JobLink</span>
         </div>
 
         <nav className="sidebar-menu">
@@ -119,10 +153,35 @@ export default function DashboardPage({ children }) {
             <button className="notification-btn">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
             </button>
-            <div className="user-profile">
-              <span className="user-name">{profileName()}</span>
-              <div className="avatar-circle">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+            <div className="user-profile-menu-container">
+              <div className="user-profile" onClick={toggleProfileDropdown}>
+                <span className="user-name">{name}</span>
+                <div className="avatar-circle">
+                  <svg className={`chevron-indicator ${isProfileDropdownOpen ? "rotated" : ""}`} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                </div>
+                {isProfileDropdownOpen && (
+                  <div className="profile-dropdown-card" onClick={(e) => e.stopPropagation()}>
+                    <div className="dropdown-user-info-summary">
+                      <div className="summary-title">{name}</div>
+                      <div className="summary-subtitle">Authenticated Account</div>
+                    </div>
+
+                    <div className="dropdown-divider-line"></div>
+
+                    <button
+                      className="dropdown-action-item logout-trigger"
+                      type="button"
+                      onClick={handleLogout}
+                    >
+                      <svg className="action-item-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                      </svg>
+                      <span>Log Out</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

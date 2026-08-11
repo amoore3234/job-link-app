@@ -45,7 +45,7 @@ public class UserService implements UserDetailsService {
     return userRepository.findByUsername(username);
   }
 
-  private boolean checkUserResumeExists(String username, String directoryPath) {
+  public boolean checkUserResumeExists(String username, String directoryPath) {
     File folder = new File(directoryPath);
 
     // Check if the directory exists

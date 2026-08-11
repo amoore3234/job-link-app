@@ -140,7 +140,7 @@ public class JobPortalControllerTest {
     WebClientResponseException exception = WebClientResponseException.create(
         HttpStatus.UNAUTHORIZED.value(), "401 UNAUTHORIZED", null, null, null);
     doThrow(exception).when(jobPostingService).addJobPostings(anyString());
-    when(jobPortalController.addJobPostings(any()))
+    when(jobPortalController.addJobPostings(any(), any()))
         .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "401 Unauthorized"));
 
     // Act and Assert
@@ -162,7 +162,7 @@ public class JobPortalControllerTest {
     WebClientResponseException exception = WebClientResponseException.create(
         HttpStatus.INTERNAL_SERVER_ERROR.value(), "500 Internal Server Error", null, null, null);
     doThrow(exception).when(jobPostingService).addJobPostings(anyString());
-    when(jobPortalController.addJobPostings(any()))
+    when(jobPortalController.addJobPostings(any(), any()))
         .thenThrow(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "500 Internal Server Error"));
 
     // Act and Assert

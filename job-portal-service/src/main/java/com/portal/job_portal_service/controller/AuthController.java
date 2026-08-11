@@ -19,15 +19,13 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -75,7 +73,7 @@ public class AuthController {
           )
         );
         String storageDirectoryPath = "/app/uploads/";
-        boolean hasUploadedResume = checkUserResumeExists(loginRequest.getUsername(), storageDirectoryPath);
+        boolean hasUploadedResume = userService.checkUserResumeExists(request.getUsername(), storageDirectoryPath);
         boolean isFirstTimeUser = !hasUploadedResume;
         String token = jwtService.generateToken(auth.getName());
 
@@ -99,15 +97,20 @@ public class AuthController {
         @ApiResponse(
           responseCode = "200",
           description = "User details we returned successfully.",
-          mediaType = "application/json"
+          content = @Content(
+            mediaType = "application/json"
+          )
         )
       })
       public ResponseEntity<User> findUserByUsername(@RequestParam("username") String username) {
         try {
           Optional<User> response = userService.findByUsername(username);
           User user = response.get();
+          User profileName = new User();
+          profileName.setFirstName(user.getFirstName());
+          profileName.setLastName(user.getLastName());
 
-          return ResponseEntity.ok(user);
+          return ResponseEntity.ok(profileName);
         } catch (Exception e) {
           log.error("An unexpected error occurred: " + e.getMessage());
           return ResponseEntity.status(500).build();

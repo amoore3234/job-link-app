@@ -64,3 +64,12 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+.sign-in-btn {
+  background-color: #52c463; /* Image Signature Flat Green */
+  margin-bottom: 16px;       /* Adds vertical space separation between the buttons */
+}
+
+.sign-up-btn {
+  background-color: #1677ff; /* Image Signature Slate Blue */
+}
