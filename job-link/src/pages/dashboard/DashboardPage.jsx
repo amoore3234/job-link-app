@@ -16,7 +16,6 @@ export default function DashboardPage({ children }) {
   useEffect(() => {
     const fetchUserData = async () => {
       const username = localStorage.getItem("loggedInUser");
-      console.log(`Username: ${username}`);
 
       if (username) {
         try {
@@ -50,7 +49,7 @@ export default function DashboardPage({ children }) {
   const handleLogout = (e) => {
     e.stopPropagation();
     localStorage.removeItem("loggedInUser");
-    window.location.href = "/login";
+    window.location.href = "/";
   }
 
   const toggleProfileDropdown = (e) => {
@@ -78,7 +77,7 @@ export default function DashboardPage({ children }) {
 
   return (
     <div className="portal-container">
-      {/* SIDEBAR NAVIGATION */}
+
       <aside className={`portal-sidebar ${isSidebarOpen ? "open" : "collapsed"}`}>
         <div className="sidebar-brand">
           <div className="brand-logo-circle">JL</div>
@@ -91,7 +90,10 @@ export default function DashboardPage({ children }) {
               className={`menu-item ${activeTab === "dashboard" ? "active" : ""}`}
               onClick={() => setActiveTab("dashboard")}
             >
-              <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
+              <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
               <span className="menu-text">Dashboard</span>
             </button>
 
@@ -99,7 +101,10 @@ export default function DashboardPage({ children }) {
               className={`menu-item ${activeTab === "job-search" ? "active" : ""}`}
               onClick={() => setActiveTab("job-search")}
             >
-              <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>
+              <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              </svg>
               <span className="menu-text">Job Search</span>
             </button>
           </div>
@@ -109,7 +114,10 @@ export default function DashboardPage({ children }) {
               className={`menu-item ${activeTab === "help" ? "active" : ""}`}
               onClick={() => setActiveTab("help")}
             >
-              <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+              <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
               <span className="menu-text">Help</span>
             </button>
 
@@ -124,23 +132,16 @@ export default function DashboardPage({ children }) {
         </nav>
       </aside>
 
-      {/* VIEWPORT CONTENT CONTAINER */}
       <div className="portal-main">
-        {/* HEADER BAR */}
         <header className="portal-header">
-          {/* <button className="hamburger-toggle" onClick={toggleSidebar}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
-          </button> */}
           <button className="hamburger-toggle sidebar-toggle-btn" onClick={toggleSidebar}>
             {isSidebarOpen ? (
-              /* Collapse Sidebar Icon (Points Left) */
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" />
                 <path d="M9 3v18" />
                 <path d="m16 15-3-3 3-3" />
               </svg>
             ) : (
-              /* Expand Sidebar Icon (Points Right) */
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" />
                 <path d="M9 3v18" />
@@ -157,7 +158,10 @@ export default function DashboardPage({ children }) {
               <div className="user-profile" onClick={toggleProfileDropdown}>
                 <span className="user-name">{name}</span>
                 <div className="avatar-circle">
-                  <svg className={`chevron-indicator ${isProfileDropdownOpen ? "rotated" : ""}`} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
                 </div>
                 {isProfileDropdownOpen && (
                   <div className="profile-dropdown-card" onClick={(e) => e.stopPropagation()}>
@@ -187,7 +191,6 @@ export default function DashboardPage({ children }) {
           </div>
         </header>
 
-        {/* INJECTED PAGE BODY SLOT */}
         <main className="portal-content-view">
           {renderContentView()}
         </main>

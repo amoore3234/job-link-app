@@ -260,14 +260,6 @@ body, html {
   background-color: #f1f5f9;
 }
 
-.chevron-indicator {
-  transition: transform 0.2s ease-in-out;
-}
-
-.chevron-indicator.rotated {
-  transform: rotate(180deg); /* Flips arrow up when card opens */
-}
-
 /* FLOATING PROFILE MANAGEMENT PANEL MATERIAL VIEW CARD */
 .profile-dropdown-card {
   position: absolute;

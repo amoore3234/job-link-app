@@ -1,9 +1,10 @@
 import { apiClient } from "./client";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const authApi = {
   register: (userData) => apiClient.post("/auth/register", userData),
   login: (credentials) => apiClient.post("/auth/login", credentials),
-  user: async (username) => await fetch(`http://localhost:8082/auth/user?username=${username}`, {
+  user: async (username) => await fetch(`${BASE_URL}/auth/user?username=${username}`, {
     method: "GET",
     credentials: "include"
   }),

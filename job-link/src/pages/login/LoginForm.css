@@ -1,9 +1,12 @@
 .container {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 140vh
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f8fafc;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .login-container {
@@ -61,7 +64,11 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+.sign-in-btn:hover {
+  background-color:#0a8004;
+}
+
+.sign-up-btn:hover {
   background-color: #0056b3;
 }
 

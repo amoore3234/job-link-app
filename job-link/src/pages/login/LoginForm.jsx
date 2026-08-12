@@ -69,9 +69,10 @@ export default function LoginForm() {
       } else {
         console.log(`There was an issue parsing the raw JSON data.`);
       }
-      console.log(`Login response: ${JSON.stringify(response, null, 2)}`);
+
       const isFirstTime = response?.confirmFirstTimeLogin
       setIsSubmitting(false);
+
       if (isFirstTime) {
         navigate("/upload");
       } else {

@@ -46,7 +46,6 @@ export default function UploadScreen() {
 
     try {
       const uploadCall = await portalApi.upload(formData);
-      console.log(`Successful upload: ${uploadCall}`);
       setIsSuccess(true);
     } catch (err) {
       setError(err.response?.data?.message || "Upload failed. Please try again.");
